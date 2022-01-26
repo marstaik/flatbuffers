@@ -420,7 +420,10 @@ endif()
 
 if(FLATBUFFERS_BUILD_SHAREDLIB)
   add_library(flatbuffers_shared SHARED ${FlatBuffers_Library_SRCS})
-
+  # Attach header directory for when build via add_subdirectory().
+  target_include_directories(flatbuffers_shared INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+  target_compile_options(flatbuffers_shared PRIVATE "${FLATBUFFERS_PRIVATE_CXX_FLAGS}")
   # Shared object version: "major.minor.micro"
   # - micro updated every release when there is no API/ABI changes
   # - minor updated when there are additions in API/ABI
